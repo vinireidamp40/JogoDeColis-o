@@ -1,0 +1,105 @@
+<!--
+Programa: Jogo de Colisão
+Nome: Breno Pivante Cezario - Nº: 2
+Nome: Vinicius Dos Santos Pereira Pompeu - Nº: 28
+-->
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo de Colisão</title>
+    <style>
+        canvas {
+            border: 1px solid black;
+        }
+        #controls {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="gameCanvas" width="600" height="400"></canvas>
+    <div id="controls">
+        <button onclick="move('left')">Mover Esquerda</button>
+        <button onclick="move('right')">Mover Direita</button>
+        <button onclick="move('up')">Mover Cima</button>
+        <button onclick="move('down')">Mover Baixo</button>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+
+        const player1 = { x: 50, y: 50, width: 30, height: 30, color: 'red' };
+        const player2 = { x: 500, y: 50, width: 30, height: 30, color: 'blue' };
+
+        function drawPlayers() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = player1.color;
+            ctx.fillRect(player1.x, player1.y, player1.width, player1.height);
+            ctx.fillStyle = player2.color;
+            ctx.fillRect(player2.x, player2.y, player2.width, player2.height);
+            detectCollision();
+        }
+
+        function detectCollision() {
+            if (player1.x < player2.x + player2.width &&
+                player1.x + player1.width > player2.x &&
+                player1.y < player2.y + player2.height &&
+                player1.y + player1.height > player2.y) {
+                alert("COLISÃO DETECTADA");
+                resetGame();
+            }
+        }
+
+        function resetGame() {
+            player1.x = 50;
+            player1.y = 50;
+            player2.x = 500;
+            player2.y = 50;
+            drawPlayers();
+        }
+
+        function move(direction) {
+            switch (direction) {
+                case 'left':
+                    player1.x -= 10;
+                    break;
+                case 'right':
+                    player1.x += 10;
+                    break;
+                case 'up':
+                    player1.y -= 10;
+                    break;
+                case 'down':
+                    player1.y += 10;
+                    break;
+            }
+            drawPlayers();
+        }
+
+        // Controles do Player 2 com teclas
+        document.addEventListener('keydown', function(event) {
+            switch (event.key) {
+                case 'ArrowLeft':
+                    player2.x -= 10;
+                    break;
+                case 'ArrowRight':
+                    player2.x += 10;
+                    break;
+                case 'ArrowUp':
+                    player2.y -= 10;
+                    break;
+                case 'ArrowDown':
+                    player2.y += 10;
+                    break;
+            }
+            drawPlayers();
+        });
+
+        drawPlayers(); // Desenha os jogadores inicialmente
+    </script>
+</body>
+</html>
